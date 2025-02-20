@@ -7,7 +7,7 @@ function Hero() {
         imageUrl: "http://i.imgflip.com/1otk96.jpg",
         texts: [
             { id: 1, content: "Is this...", x: 20, y: 0, dragging: false },
-            { id: 2, content: "Real??", x: 20, y: 80, dragging: false }
+            { id: 2, content: "For Real??", x: 20, y: 80, dragging: false }
         ]
     });
 
