@@ -1,18 +1,38 @@
 import React from 'react'
 import './App.css'
-import Header from './components/Header'
-import Hero from './components/Hero'
+import Home from './components/Home';
+import FullPage from './components/FullPage';
+import { RedirectToSignIn, SignedIn, SignedOut } from '@clerk/clerk-react';
+
+import {
+    createBrowserRouter,
+    createRoutesFromElements,
+    Route,
+    RouterProvider,
+} from "react-router-dom";
+
+const router = createBrowserRouter(
+    createRoutesFromElements(
+        <>
+            <Route index element={<Home />} />
+            <Route path='/home' element={<>
+                <SignedIn>
+                    <FullPage />
+                </SignedIn>
+
+                <SignedOut>
+                    <RedirectToSignIn />
+                </SignedOut>
+            </>} />
+        </>
+    )
+)
 
 function App() {
     return (
-        <div className='h-screen bg-amber-100'>
-            <div className='flex flex-col items-center pt-0 sm:pt-0 md:pt-10 mt-auto'>
-                <Header />
-                <Hero />
-            </div>
-        </div>
-
-
+        <>
+            <RouterProvider router={router} />
+        </>
     )
 }
 
