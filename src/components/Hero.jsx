@@ -4,10 +4,10 @@ import "./Hero.css"
 function Hero() {
 
     const [meme, setMeme] = useState({
-        imageUrl: "http://i.imgflip.com/1bij.jpg",
+        imageUrl: "http://i.imgflip.com/1otk96.jpg",
         texts: [
-            { id: 1, content: "One does not simply", x: 20, y: 0, dragging: false },
-            { id: 2, content: "Walk into Mordor", x: 20, y: 80, dragging: false }
+            { id: 1, content: "Is this...", x: 20, y: 0, dragging: false },
+            { id: 2, content: "Real??", x: 20, y: 80, dragging: false }
         ]
     });
 
@@ -114,12 +114,12 @@ function Hero() {
 
 
     return (
-        <main className='bg-white w-300 p-9 h-auto'>
-            <div className='form'>
+        <main className='flex flex-col bg-white w-full max-w-6xl p-9 h-auto rounded-b-lg shadow-lg'>
+            <div className='form flex flex-col gap-6 w-full'>
                 {meme.texts.map((text, index) => (
-                    <label key={text.id}>
+                    <label key={text.id} className='flex flex-col w-full'>
                         Text {index + 1}
-                        <textarea
+                        <textarea className="flex border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full min-h-[80px]"
                             placeholder={`Text ${index + 1}`}
                             value={text.content}
                             onChange={(e) => handleChange(e, text.id)}
@@ -129,13 +129,13 @@ function Hero() {
                     </label>
                 ))}
                 <button
-                    className='bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded'
+                    className='bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white mt-4 py-2 px-4 border border-blue-500 hover:border-transparent rounded w-full sm:w-auto'
                     onClick={getMemeImage}
                 >
                     Get New Meme</button>
             </div>
             <div className="meme">
-                <img src={meme.imageUrl} alt="Meme" />
+                <img src={meme.imageUrl} alt="Meme" className="w-full max-h-[500px] object-contain rounded-lg" />
                 {meme.texts.map((text) => (
                     <span
                         key={text.id}
@@ -152,7 +152,7 @@ function Hero() {
                 ))}
             </div>
             <button
-                className='bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded'
+                className='bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white mt-4 py-2 px-4 border border-green-500 hover:border-transparent rounded w-full sm:w-auto'
                 onClick={downloadMeme}
             >
                 Download Meme</button>
