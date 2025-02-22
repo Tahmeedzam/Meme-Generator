@@ -14,7 +14,7 @@ import {
 const router = createBrowserRouter(
     createRoutesFromElements(
         <>
-            <Route index element={<Home />} />
+            <Route index element={<FullPage />} />
             <Route path='/home' element={<>
                 <SignedIn>
                     <FullPage />

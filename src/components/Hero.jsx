@@ -1,7 +1,14 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import "./Hero.css"
+import { RedirectToSignIn, SignedIn, SignedOut, useUser, useClerk } from "@clerk/clerk-react";
+import Home from "./Home";
 
 function Hero() {
+
+    const { isSignedIn } = useUser();
+    const { openSignIn } = useClerk();
+
+    const [selectedFormat, setSelectedFormat] = useState("png")
 
     const [meme, setMeme] = useState({
         imageUrl: "http://i.imgflip.com/1otk96.jpg",
@@ -73,11 +80,19 @@ function Hero() {
         }));
     }
 
+    function handleDownload() {
+        if (isSignedIn) {
+            downloadMeme(); // Proceed to download
+        } else {
+            openSignIn(); // Open sign-in modal/page
+        }
+    }
+
     function downloadMeme() {
         const canvas = canvasRef.current;
+        if (!canvas) return;
+
         const ctx = canvas.getContext("2d");
-
-
         const img = new Image();
         img.crossOrigin = "anonymous";
         img.src = meme.imageUrl;
@@ -85,7 +100,6 @@ function Hero() {
         img.onload = () => {
             canvas.width = img.width;
             canvas.height = img.height;
-
             ctx.drawImage(img, 0, 0);
 
             meme.texts.forEach(text => {
@@ -96,7 +110,6 @@ function Hero() {
                 ctx.textAlign = "left";
                 ctx.textBaseline = "top";
 
-
                 const x = (text.x / 100) * canvas.width;
                 const y = (text.y / 100) * canvas.height;
 
@@ -104,10 +117,10 @@ function Hero() {
                 ctx.fillText(text.content, x, y);
             });
 
-            const dataUrl = canvas.toDataURL("image/png");
+            const dataUrl = canvas.toDataURL(`image/${selectedFormat}`);
             const link = document.createElement("a");
             link.href = dataUrl;
-            link.download = "meme.png";
+            link.download = `meme.${selectedFormat}`;
             link.click();
         };
     }
@@ -151,9 +164,21 @@ function Hero() {
                     </span>
                 ))}
             </div>
+            <label className="flex flex-col">
+                Choose Format:
+                <select
+                    className="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    value={selectedFormat}
+                    onChange={(e) => setSelectedFormat(e.target.value)}
+                >
+                    <option value="png">PNG</option>
+                    <option value="jpeg">JPEG</option>
+                    <option value="webp">WebP</option>
+                </select>
+            </label>
             <button
                 className='bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white mt-4 py-2 px-4 border border-green-500 hover:border-transparent rounded w-full sm:w-auto'
-                onClick={downloadMeme}
+                onClick={handleDownload}
             >
                 Download Meme</button>
             <canvas ref={canvasRef} style={{ display: "none" }} />
